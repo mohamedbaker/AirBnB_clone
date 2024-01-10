@@ -31,5 +31,5 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path) as f:
                 FileStorage.__objects = json.load(f)
-        except:
+        except FileNotFoundError:
             pass
