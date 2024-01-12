@@ -8,7 +8,9 @@ import models
 class BaseModel:
     """ BaseModel implementation """
     def __init__(self, *args, **kwargs):
-        """ Setting up initialization for BaseMode class """
+        """ Setting up initialization for BaseMode class
+            *args: Is not been used
+        """
         if kwargs:
             del kwargs["__class__"]
             self.__dict__.update(kwargs)
