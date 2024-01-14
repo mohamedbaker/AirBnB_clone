@@ -24,6 +24,14 @@ class HBNBCommand(cmd.Cmd):
         '''Quit command to exit the program'''
         return True
 
+    def do_help(self, arg):
+        '''
+        Get help on commands.
+        'help' or '?' with no arguments prints a list of commands.
+        'help <command>' or '? <command>' gives help on <command>.
+        '''
+        cmd.Cmd.do_help(self, arg)
+
     def do_create(self, arg):
         '''creat new instance then save it to storagefile.
            USAGE: creat (class name).
