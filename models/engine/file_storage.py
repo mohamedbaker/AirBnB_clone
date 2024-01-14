@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """ This module implements the File storage system """
 import json
-from models import base_model
+from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -18,18 +19,23 @@ class FileStorage:
     def new(self, obj):
         """ Adds 'obj' to the dictionary containing all objects """
         key = ".".join([obj.__class__.__name__, obj.id])
-        FileStorage.__objects[key] = obj.to_dict()
+        FileStorage.__objects[key] = obj
         self.save()
 
     def save(self):
         """ Serializes the main object dictionary to a JSON file """
         with open(FileStorage.__file_path, "w") as f:
-            json.dump(FileStorage.__objects, f)
+            dict_save = {k: v.to_dict()
+                         for (k, v) in FileStorage.__objects.items()}
+            json.dump(dict_save, f)
 
     def reload(self):
         """ Deserializes JSON file back to the main object dictionary """
+        dict_load = {}
         try:
             with open(FileStorage.__file_path) as f:
-                FileStorage.__objects = json.load(f)
+                dict_load = json.load(f)
         except FileNotFoundError:
             pass
+        FileStorage.__objects = {k: eval(k[:k.find(".")] + "(**v)")
+                                 for (k, v) in dict_load.items()}
