@@ -107,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
                if isinstance(obj, dict):
                    obj[attr_name] = attr_value
                    print(obj)
-                   
+                   obj.update()
                    '''converting to object
                    obj_instance = BaseModel(**obj)
 
@@ -115,9 +115,9 @@ class HBNBCommand(cmd.Cmd):
                    obj_instance.save()'''
                else:
                    setattr(obj, attr_name, attr_value)
-                 #bug here !!!         
-              # storage.save()
-               print(f"Attribute '{attr_name}' updated/added successfully.")
+               #bug here !!!         
+               #storage.save()
+               #print(f"Attribute '{attr_name}' updated/added successfully.")
 
 
     def precmd(self, line):
