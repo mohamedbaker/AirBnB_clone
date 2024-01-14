@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import cmd
 import shlex
+import sys
 from models.base_model import BaseModel
 from models import storage
 
@@ -130,8 +131,10 @@ class HBNBCommand(cmd.Cmd):
         '''Record the command that was executed. This also allows us to
          transform dashes back to underscores.
         '''
+        if sys.stdin.isatty():
+            print(line)
+            print('\n')
         if not line.startswith('quit') and not line.startswith('EOF'):
-
             (command, arg, line) = self.parseline(line)
             self.inputs = shlex.split(arg)
             if not command == 'all' and self.inputs == '':
