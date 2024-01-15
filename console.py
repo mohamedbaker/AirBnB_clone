@@ -114,13 +114,14 @@ class HBNBCommand(cmd.Cmd):
         if len(self.inputs) == 0:
             for key in objects:
                 model_list.append(str(objects[key]))
-                print(json.dumps(model_list))
+            print(json.dumps(model_list))
         elif self.inputs[0] not in self.classes_list:
             print("** class doesn't exist **")
         else:
-            for key in objects:
-                model_list.append(str(objects[key]))
-                print(json.dumps(model_list))
+            for key, val in objects.items():
+                if key.split('.')[0] == self.inputs[0]:
+                    model_list.append(str(val))
+            print(model_list)
 
     def do_update(self, arg):
         '''
