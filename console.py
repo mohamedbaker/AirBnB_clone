@@ -161,7 +161,6 @@ class HBNBCommand(cmd.Cmd):
                     obj_instance.save()'''
                 else:
                     setattr(obj, attr_name, attr_value)
-                # storage.save()
                 # print(f"Attribute '{attr_name}' updated/added successfully.")
 
     def precmd(self, line):
