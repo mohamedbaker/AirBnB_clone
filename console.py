@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+""" Console Module that has that has  implementation for the console  """
 import cmd
 import shlex
 import sys
+import json
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -106,17 +108,19 @@ class HBNBCommand(cmd.Cmd):
              based or not on the class name.
              Ex: $ all <class name> or $ all.
              '''
-
+        storage.reload()
+        model_list = []
         objects = storage.all()
         if len(self.inputs) == 0:
-            for key, val in objects.items():
-                print(str(val))
+            for key in objects:
+                model_list.append(str(objects[key]))
+                print(json.dumps(model_list))
         elif self.inputs[0] not in self.classes_list:
             print("** class doesn't exist **")
         else:
-            for key, val in objects.items():
-                if key.split('.')[0] == self.inputs[0]:
-                    print(str(val))
+            for key in objects:
+                model_list.append(str(objects[key]))
+                print(json.dumps(model_list))
 
     def do_update(self, arg):
         '''
