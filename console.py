@@ -4,14 +4,20 @@ import shlex
 import sys
 from models.base_model import BaseModel
 from models import storage
-
+from models.user import User
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.city import City
 
 class HBNBCommand(cmd.Cmd):
     ''' command interpreter to mange objects.'''
 
     prompt = '(hbnb) '
     inputs = ''
-    classes_list = ["BaseModel"]
+    classes_list = ["BaseModel", "User", "Amenity",
+                     "Place", "Review", "State", "City"]
 
     def do_EOF(self, line):
         '''exit prog by pressing ctr + D'''
@@ -38,8 +44,9 @@ class HBNBCommand(cmd.Cmd):
            USAGE: creat (class name).
         '''
 
-        new_instance = BaseModel()
-        new_instance.save()
+        new_instance = eval(f"{self.inputs[0]}()")
+        #print(eval(f"{self.inputs[0]}()"))
+        storage.save()
         print(new_instance.id)
 
     def do_show(self, arg):
@@ -131,9 +138,6 @@ class HBNBCommand(cmd.Cmd):
         '''Record the command that was executed. This also allows us to
          transform dashes back to underscores.
         '''
-        if sys.stdin.isatty():
-            print(line)
-            print('\n')
         if not line.startswith('quit') and not line.startswith('EOF'):
             (command, arg, line) = self.parseline(line)
             self.inputs = shlex.split(arg)
