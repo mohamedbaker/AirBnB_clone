@@ -11,47 +11,68 @@ from models.review import Review
 from models.state import State
 from models.city import City
 
+
 class HBNBCommand(cmd.Cmd):
     ''' command interpreter to mange objects.'''
 
     prompt = '(hbnb) '
     inputs = ''
     classes_list = ["BaseModel", "User", "Amenity",
-                     "Place", "Review", "State", "City"]
+                    "Place", "Review", "State", "City"]
 
     def do_EOF(self, line):
-        '''exit prog by pressing ctr + D'''
+        '''
+           exit prog by pressing ctr + D
+        '''
         return True
 
     def emptyline(self):
-        '''Do nothing on empty line'''
+        '''
+           Do nothing on empty line
+        '''
         pass
 
     def do_quit(self, q):
-        '''Quit command to exit the program'''
+        '''
+           Quit command to exit the program
+        '''
         return True
 
     def do_help(self, arg):
         '''
         Get help on commands.
-        'help' or '?' with no arguments prints a list of commands.
-        'help <command>' or '? <command>' gives help on <command>.
+        Usage:
+            help [command]
         '''
-        cmd.Cmd.do_help(self, arg)
+        if arg:
+            # Get help for a specific command
+            doc_func = getattr(self, 'help_' + arg, None)
+            if doc_func:
+                doc_func()
+            else:
+                cmd.Cmd.do_help(self, arg)
+                # print(f"No help available for '{arg}'.")
+        else:
+            # Display general help
+            super().do_help(arg)
+
+    def help_quit(self):
+        print("Exit the program. Equivalent to 'EOF'.\n")
 
     def do_create(self, arg):
-        '''creat new instance then save it to storagefile.
-           USAGE: creat (class name).
+        '''
+           create new instance then save it to storagefile.
+           USAGE: create (class name).
         '''
 
         new_instance = eval(f"{self.inputs[0]}()")
-        #print(eval(f"{self.inputs[0]}()"))
         storage.save()
         print(new_instance.id)
 
     def do_show(self, arg):
         ''' Prints the string representation of an instance.
-             based on the class name and id.'''
+             based on the class name and id.
+        '''
 
         if len(self.inputs) < 2:
             print('** instance id missing *')
@@ -80,9 +101,11 @@ class HBNBCommand(cmd.Cmd):
                 print('** no instance found **')
 
     def do_all(self, arg):
-        '''Prints all string representation of all instances
-            based or not on the class name.
-             Ex: $ all <class name> or $ all.'''
+        '''
+            Prints all string representation of all instances
+             based or not on the class name.
+             Ex: $ all <class name> or $ all.
+             '''
 
         objects = storage.all()
         if len(self.inputs) == 0:
@@ -96,8 +119,10 @@ class HBNBCommand(cmd.Cmd):
                     print(str(val))
 
     def do_update(self, arg):
-        ''' Updates an instance based on the class name and id
-             by adding or updating attribute.
+        '''
+           Updates an instance based on the class name and id
+           by adding or updating attribute.
+           USAGE : update class name attrs
         '''
 
         if len(self.inputs) < 2:
@@ -139,17 +164,18 @@ class HBNBCommand(cmd.Cmd):
          transform dashes back to underscores.
         '''
         if not line.startswith('quit') and not line.startswith('EOF'):
-            (command, arg, line) = self.parseline(line)
-            self.inputs = shlex.split(arg)
-            if not command == 'all' and self.inputs == '':
-                if len(self.inputs) == 0:
-                    print('** class name missing **')
-                    command = ''
-                    return command
-                elif self.inputs[0] not in self.classes_list:
-                    print("** class doesn't exist **")
-                    command = ''
-                    return command
+            if line:
+                (command, arg, line) = self.parseline(line)
+                self.inputs = shlex.split(arg)
+                if not command == 'all' and self.inputs == '':
+                    if len(self.inputs) == 0:
+                        print('** class name missing **')
+                        command = ''
+                        return command
+                    elif self.inputs[0] not in self.classes_list:
+                        print("** class doesn't exist **")
+                        command = ''
+                        return command
 
         return line
 
