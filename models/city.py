@@ -10,6 +10,8 @@ class City(BaseModel):
             *args: Is not been used
         """
         class_attr = ["state_id", "name"]
+        self.state_id = ""
+        self.name = ""
         if kwargs:
             sub_dict = {k: kwargs[k] for k in class_attr if kwargs.get(k)}
             nargs = {k: v for (k, v) in kwargs.items() if k not in class_attr}

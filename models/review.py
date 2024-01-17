@@ -10,6 +10,9 @@ class Review(BaseModel):
             *args: Is not been used
         """
         class_attr = ["place_id", "user_id", "text"]
+        self.place_id = ""
+        self.user_id = ""
+        self.text = ""
         if kwargs:
             sub_dict = {k: kwargs[k] for k in class_attr if kwargs.get(k)}
             nargs = {k: v for (k, v) in kwargs.items() if k not in class_attr}

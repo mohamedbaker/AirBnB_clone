@@ -7,6 +7,7 @@ import models
 
 class BaseModel:
     """ BaseModel implementation """
+    __defualts = [0, 0.0, "", []]
     def __init__(self, *args, **kwargs):
         """ Setting up initialization for BaseModel class
             *args: Is not been used
@@ -24,8 +25,10 @@ class BaseModel:
 
     def __str__(self):
         """ Informal string representation of BaseModel """
+        print_dict = {k: v for (k, v) in self.__dict__.items()
+                      if v not in BaseModel.__defualts}
         return "[{}] ({}) {}".format(self.__class__.__name__,
-                                     self.id, self.__dict__)
+                                     self.id, print_dict)
 
     def save(self):
         """ Updates the the timestamp whenever an update occurs """
@@ -34,7 +37,8 @@ class BaseModel:
 
     def to_dict(self):
         """ Returns a dictionary containing all key/value pairs """
-        new_dict = self.__dict__.copy()
+        new_dict = {k: v for (k, v) in self.__dict__.items()
+                      if v not in BaseModel.__defualts}
         new_dict["__class__"] = self.__class__.__name__
         new_dict["created_at"] = self.created_at.isoformat()
         new_dict["updated_at"] = self.updated_at.isoformat()

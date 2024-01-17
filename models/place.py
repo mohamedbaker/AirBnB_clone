@@ -13,6 +13,17 @@ class Place(BaseModel):
                       "number_rooms", "number_bathrooms", "max_guest",
                       "price_by_night", "latitude", "longitude",
                       "amenity_ids"]
+        self.city_id = ""
+        self.user_id = ""
+        self.name = ""
+        self.description = ""
+        self.number_rooms = 0
+        self.number_bathrooms = 0
+        self.max_guest = 0
+        self.price_by_night = 0
+        self.latitude = 0.0
+        self.longitude = 0.0
+        self.amenity_ids = []
         if kwargs:
             sub_dict = {k: kwargs[k] for k in class_attr if kwargs.get(k)}
             nargs = {k: v for (k, v) in kwargs.items() if k not in class_attr}

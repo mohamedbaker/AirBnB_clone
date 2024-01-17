@@ -10,6 +10,10 @@ class User(BaseModel):
             *args: Is not been used
         """
         class_attr = ["email", "password", "first_name", "last_name"]
+        self.email = ""
+        self.password = ""
+        self.first_name = ""
+        self.last_name = ""
         if kwargs:
             sub_dict = {k: kwargs[k] for k in class_attr if kwargs.get(k)}
             nargs = {k: v for (k, v) in kwargs.items() if k not in class_attr}
