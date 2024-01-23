@@ -1,1 +1,1 @@
-Forging out the frontend of the the AirBnB project
+AirBNB web static html and css
